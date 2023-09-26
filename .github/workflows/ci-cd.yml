@@ -1,0 +1,32 @@
+  name: Build and Deploy React App
+
+  on:
+    push:
+      branches: 
+        - master
+
+  jobs:
+    build-and-deploy:
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+
+        - name: Install dependencies 
+          run: npm install
+
+        - name: Build React app
+          run: npm run build 
+
+        - name: Connect to EC2 instance
+          uses: actions/ssh@v2
+          with:
+            host: ${{ secrets.EC2_CREDS.EC2_HOST }}  
+            username: ${{ secrets.EC2_USERNAME }}  
+            key: ${{ secrets.EC2_KEY }}
+
+        - name: Deploy build to EC2
+          run: |
+            scp -r build/* ec2-user@${{ secrets.EC2_HOST }}:~/react-app
+            ssh ec2-user@${{ secrets.EC2_HOST }} "pm2 restart react-app"
