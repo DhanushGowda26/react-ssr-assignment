@@ -23,8 +23,8 @@ jobs:
         with:
           node-version: 16
 
-      - name: Install dependencies with custom Python version
-        run: npm install --python=python2.7
+      - name: Install dependencies
+        run: npm install
 
       - name: Build React app
         run: npm run build
