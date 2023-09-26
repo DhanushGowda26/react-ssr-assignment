@@ -13,19 +13,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Python
+      - name: Set up Python 3.x
         uses: actions/setup-python@v2
         with:
-          python-version: 3
-
+          python-version: 3.x
 
       - name: Install Node.js and npm
         uses: actions/setup-node@v2
         with:
-          node-version: 16 
+          node-version: 16
 
-      - name: Install dependencies
-        run: npm install
+      - name: Install dependencies with custom Python version
+        run: npm install --python=python2.7
 
       - name: Build React app
         run: npm run build
